@@ -15,7 +15,7 @@ import hotel.utils.IOUtils;
 public class CheckoutCTL {
 
 	private enum State {ROOM, ACCEPT, CREDIT, CANCELLED, COMPLETED };
-	
+
 	private Hotel hotel;
 	private State state;
 	private CheckoutUI checkoutUI;
@@ -26,16 +26,16 @@ public class CheckoutCTL {
 	public CheckoutCTL(Hotel hotel) {
 		this.hotel = hotel;
 		this.checkoutUI = new CheckoutUI(this);
+		state = State.ROOM;
 	}
 
-	
+
 	public void run() {
 		IOUtils.trace("BookingCTL: run");
-		state = State.ROOM;
 		checkoutUI.run();
 	}
 
-	
+
 	public void roomIdEntered(int roomId) {
 		if (state != State.ROOM) {
 			String mesg = String.format("CheckoutCTL: roomIdEntered : bad state : %s", state);
@@ -44,38 +44,38 @@ public class CheckoutCTL {
 		this.roomId = roomId;
 		Booking booking = hotel.findActiveBookingByRoomId(roomId);
 		if (booking == null) {
-			String mesg = String.format("No active booking found for room id %d", roomId);			
+			String mesg = String.format("No active booking found for room id %d", roomId);
 			checkoutUI.displayMessage(mesg);
 			//cancel();
-		}	
-		else {			
+		}
+		else {
 			StringBuilder sb = new StringBuilder();
-			sb.append(String.format("Charges for room: %d, booking: %d\n", 
+			sb.append(String.format("Charges for room: %d, booking: %d\n",
 					roomId, booking.getConfirmationNumber()));
-			
+
 			SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 			String dateStr = format.format(booking.getArrivalDate());
 			sb.append(String.format("Arrival date: %s, Staylength: %d\n", dateStr, booking.getStayLength()));
-			
+
 			Guest guest = booking.getGuest();
-			sb.append(String.format("Guest: %s, Address: %s, Phone: %d\n", 
+			sb.append(String.format("Guest: %s, Address: %s, Phone: %d\n",
 					guest.getName(), guest.getAddress(), guest.getPhoneNumber()));
-			
+
 			sb.append("Charges:\n");
-			
+
 			total = 0;
 			List<ServiceCharge> charges = booking.getCharges();
 			for (ServiceCharge sc : charges) {
 				total += sc.getCost();
-				String chargeStr = String.format("    %-12s:%10s", 
+				String chargeStr = String.format("    %-12s:%10s",
 						sc.getDescription(), String.format("$%.2f", sc.getCost()));
-				sb.append(chargeStr).append("\n");			
+				sb.append(chargeStr).append("\n");
 			}
 			sb.append(String.format("Total: $%.2f\n", total));
 			String mesg = sb.toString();
 			checkoutUI.displayMessage(mesg);
 			state = State.ACCEPT;
-			checkoutUI.setState(CheckoutUI.State.ACCEPT);	
+			checkoutUI.setState(CheckoutUI.State.ACCEPT);
 		}
 	}
 
@@ -93,10 +93,10 @@ public class CheckoutCTL {
 			checkoutUI.displayMessage("Charges accepted");
 			state = State.CREDIT;
 			checkoutUI.setState(CheckoutUI.State.CREDIT);
-		}		
+		}
 	}
 
-	
+
 	public void creditDetailsEntered(CreditCardType type, int number, int ccv) {
 		if (state != State.CREDIT) {
 			String mesg = String.format("CheckoutCTL: bookingTimesEntered : bad state : %s", state);
@@ -108,7 +108,7 @@ public class CheckoutCTL {
 			String outputStr = String.format(
 					"%s credit card number %d was not authorized for $%.2f",
 					type.getVendor(), number, total);
-					
+
 			checkoutUI.displayMessage(outputStr);
 			cancel();
 		}
@@ -129,8 +129,8 @@ public class CheckoutCTL {
 		state = State.CANCELLED;
 		checkoutUI.setState(CheckoutUI.State.CANCELLED);
 	}
-	
-	
+
+
 	public void completed() {
 		checkoutUI.displayMessage("Checking out completed");
 	}
