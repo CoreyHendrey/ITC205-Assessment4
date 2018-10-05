@@ -50,7 +50,6 @@ public class CheckinCTLScenarioTests
 		checkinCtl.confirmationNumberEntered(101111102);
 		checkinCtl.checkInConfirmed(true);
 
-		//Cancel will set the UI back to menu
 		checkinCtl.reset();
 		checkinUI.setState(State.CHECKING);
 		checkinUI.run();
