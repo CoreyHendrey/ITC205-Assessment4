@@ -9,7 +9,7 @@ import hotel.utils.IOUtils;
 
 public class CheckinCTL {
 
-	private enum State {CHECKING, CONFIRMING, CANCELLED, COMPLETED };
+	enum State {CHECKING, CONFIRMING, CANCELLED, COMPLETED };
 
 	private Hotel hotel;
 	private CheckinUI checkInUI;
