@@ -5,7 +5,6 @@ import static org.mockito.Mockito.verify;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -40,7 +39,7 @@ class RecordServiceCTLScenario
 	}
 
 	@Test
-	void test()
+	void AddServiceChargeToCheckedOutRoom()
 	{
 		bookingCtl.phoneNumberEntered(1);
 		bookingCtl.guestDetailsEntered("Test", "Address");
