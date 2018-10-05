@@ -8,23 +8,24 @@ import hotel.credit.CreditCard;
 import hotel.utils.IOUtils;
 
 public class Room {
-	
+
 	private enum State {READY, OCCUPIED}
-	
+
 	int id;
 	RoomType roomType;
 	List<Booking> bookings;
 	State state;
 
-	
+
 	public Room(int id, RoomType roomType) {
 		this.id = id;
 		this.roomType = roomType;
 		bookings = new ArrayList<>();
 		state = State.READY;
 	}
-	
 
+
+	@Override
 	public String toString() {
 		return String.format("Room : %d, %s", id, roomType);
 	}
@@ -33,16 +34,16 @@ public class Room {
 	public int getId() {
 		return id;
 	}
-	
+
 	public String getDescription() {
 		return roomType.getDescription();
 	}
-	
-	
+
+
 	public RoomType getType() {
 		return roomType;
 	}
-	
+
 	public boolean isAvailable(Date arrivalDate, int stayLength) {
 		IOUtils.trace("Room: isAvailable");
 		for (Booking b : bookings) {
@@ -52,8 +53,8 @@ public class Room {
 		}
 		return true;
 	}
-	
-	
+
+
 	public boolean isReady() {
 		return state == State.READY;
 	}
@@ -62,7 +63,7 @@ public class Room {
 	public Booking book(Guest guest, Date arrivalDate, int stayLength, int numberOfOccupants, CreditCard creditCard) {
 		Booking booking = new Booking(guest, this, arrivalDate, numberOfOccupants, numberOfOccupants, creditCard);
 		bookings.add(booking);
-		return booking;		
+		return booking;
 	}
 
 
@@ -72,7 +73,8 @@ public class Room {
 
 
 	public void checkout(Booking booking) {
-		state = state.READY;
+		bookings.remove(booking);
+		state = State.READY;
 	}
 
 
