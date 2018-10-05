@@ -1,5 +1,4 @@
 package hotel.service;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.verify;
 
 import java.util.Date;
@@ -58,7 +57,6 @@ class RecordServiceCTLScenario
 
 		recordCtrl.roomNumberEntered(102);
 
-		assertNull(hotel.activeBookingsByRoomId.get(102));
-		verify(recordServiceUI).displayMessage("No active booking for room id: 102");
+		verify(recordServiceUI).displayMessage("Booking for room id: 102 is not checked in");
 	}
 }

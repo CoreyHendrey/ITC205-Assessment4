@@ -2,18 +2,17 @@ package hotel.service;
 
 import hotel.entities.Booking;
 import hotel.entities.Hotel;
-import hotel.entities.ServiceCharge;
 import hotel.entities.ServiceType;
 import hotel.utils.IOUtils;
 
 public class RecordServiceCTL {
-	
+
 	private static enum State {ROOM, SERVICE, CHARGE, CANCELLED, COMPLETED};
-	
+
 	private Hotel hotel;
 	private RecordServiceUI recordServiceUI;
 	private State state;
-	
+
 	private Booking booking;
 	private int roomNumber;
 
@@ -24,8 +23,8 @@ public class RecordServiceCTL {
 		this.hotel = hotel;
 	}
 
-	
-	public void run() {		
+
+	public void run() {
 		IOUtils.trace("PayForServiceCTL: run");
 		recordServiceUI.run();
 	}
@@ -42,20 +41,25 @@ public class RecordServiceCTL {
 			recordServiceUI.displayMessage(mesg);
 		}
 		else {
-			this.roomNumber = roomNumber;
-			state = State.SERVICE;
-			recordServiceUI.setState(RecordServiceUI.State.SERVICE);
+			if(!hotel.findActiveBookingByRoomId(roomNumber).isCheckedIn()) {
+				String mesg = String.format("Booking for room id: %d is not checked in", roomNumber);
+				recordServiceUI.displayMessage(mesg);
+			} else {
+				this.roomNumber = roomNumber;
+				state = State.SERVICE;
+				recordServiceUI.setState(RecordServiceUI.State.SERVICE);
+			}
 		}
 	}
-	
-	
+
+
 	public void serviceDetailsEntered(ServiceType serviceType, double cost) {
 		if (state != State.SERVICE) {
 			String mesg = String.format("PayForServiceCTL: serviceDetailsEntered : bad state : %s", state);
 			throw new RuntimeException(mesg);
 		}
 		hotel.addServiceCharge(roomNumber, serviceType, cost);
-		
+
 		recordServiceUI.displayServiceChargeMessage(roomNumber, cost, serviceType.getDescription());
 		state = State.COMPLETED;
 		recordServiceUI.setState(RecordServiceUI.State.COMPLETED);
@@ -74,6 +78,6 @@ public class RecordServiceCTL {
 	}
 
 
-	
+
 
 }

@@ -133,6 +133,7 @@ public class Booking {
 
 
 	public void checkIn() {
+		state = State.CHECKED_IN;
 		room.checkin();
 	}
 
@@ -143,6 +144,7 @@ public class Booking {
 
 
 	public void checkOut() {
+		state = State.CHECKED_OUT;
 		room.checkout(this);
 	}
 
