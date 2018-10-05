@@ -9,7 +9,7 @@ import hotel.utils.IOUtils;
 
 public class CheckinCTL {
 
-	enum State {CHECKING, CONFIRMING, CANCELLED, COMPLETED };
+	private enum State {CHECKING, CONFIRMING, CANCELLED, COMPLETED };
 
 	private Hotel hotel;
 	private CheckinUI checkInUI;
@@ -32,7 +32,7 @@ public class CheckinCTL {
 
 
 	public void confirmationNumberEntered(long confirmationNumber) {
-		if (getState() != State.CHECKING) {
+		if (state != State.CHECKING) {
 			String mesg = String.format("CheckInCTL: confirmationNumberEntered : bad state : %s", state);
 			throw new RuntimeException(mesg);
 		}
@@ -78,13 +78,9 @@ public class CheckinCTL {
 		}
 	}
 
-	public State getState()
-	{
-		return state;
-	}
 
 	public void checkInConfirmed(boolean confirmed) {
-		if (getState() != State.CONFIRMING) {
+		if (state != State.CONFIRMING) {
 			String mesg = String.format("CheckInCTL: checkInConfirmed : bad state : %s", state);
 			throw new RuntimeException(mesg);
 		}
