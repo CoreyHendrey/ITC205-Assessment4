@@ -41,8 +41,8 @@ public class RecordServiceCTL {
 			recordServiceUI.displayMessage(mesg);
 		}
 		else {
-			if(!hotel.findActiveBookingByRoomId(roomNumber).isCheckedIn()) {
-				String mesg = String.format("Booking for room id: %d is not checked in", roomNumber);
+			if(hotel.findActiveBookingByRoomId(roomNumber).isCheckedOut()) {
+				String mesg = String.format("Booking for room id: %d is checked out", roomNumber);
 				recordServiceUI.displayMessage(mesg);
 			} else {
 				this.roomNumber = roomNumber;
