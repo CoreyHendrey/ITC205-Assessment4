@@ -60,4 +60,33 @@ public class CheckinCTLScenarioTests
 		verify(checkinUI).displayMessage("Booking 101111102 has already been checked in");
 	}
 
+
+	@Test
+	void CheckinToCheckedOutRoomErrorMessage()
+	{
+		bookingCtl.phoneNumberEntered(1);
+		bookingCtl.guestDetailsEntered("Test", "Address");
+		bookingCtl.roomTypeAndOccupantsEntered(RoomType.SINGLE, 1);
+
+		Date d = new GregorianCalendar(1111, 0, 1).getTime();
+		bookingCtl.bookingTimesEntered(d, 1);
+		bookingCtl.creditDetailsEntered(CreditCardType.MASTERCARD, 1, 1);
+
+		checkinCtl.confirmationNumberEntered(101111102);
+		checkinCtl.checkInConfirmed(true);
+
+		checkoutCtl.roomIdEntered(102);
+		checkoutCtl.chargesAccepted(true);
+		checkoutCtl.creditDetailsEntered(CreditCardType.MASTERCARD, 1, 1);
+
+		checkinCtl.reset();
+		checkinUI.setState(State.CHECKING);
+		checkinUI.run();
+
+		checkinCtl.confirmationNumberEntered(101111102);
+
+		verify(checkinUI, never()).displayMessage("Booking 101111102 has already been checked in");
+		verify(checkinUI).displayMessage("Booking 101111102 has already been checked out");
+	}
+
 }
