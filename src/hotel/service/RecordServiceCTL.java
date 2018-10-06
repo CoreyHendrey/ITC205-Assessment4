@@ -41,14 +41,11 @@ public class RecordServiceCTL {
 			recordServiceUI.displayMessage(mesg);
 		}
 		else {
-			if(hotel.findActiveBookingByRoomId(roomNumber).isCheckedOut()) {
-				String mesg = String.format("Booking for room id: %d is checked out", roomNumber);
-				recordServiceUI.displayMessage(mesg);
-			} else {
-				this.roomNumber = roomNumber;
-				state = State.SERVICE;
-				recordServiceUI.setState(RecordServiceUI.State.SERVICE);
-			}
+			String mesg = String.format("Booking for room id: %d is checked out", roomNumber);
+			recordServiceUI.displayMessage(mesg);
+			this.roomNumber = roomNumber;
+			state = State.SERVICE;
+			recordServiceUI.setState(RecordServiceUI.State.SERVICE);
 		}
 	}
 

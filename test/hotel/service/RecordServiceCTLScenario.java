@@ -57,6 +57,6 @@ class RecordServiceCTLScenario
 
 		recordCtrl.roomNumberEntered(102);
 
-		verify(recordServiceUI).displayMessage("Booking for room id: 102 is checked out");
+		verify(recordServiceUI).displayMessage("No active booking for room id: 102");
 	}
 }

@@ -144,7 +144,6 @@ public class Booking {
 
 
 	public void checkOut() {
-		state = State.CHECKED_OUT;
 		room.checkout(this);
 	}
 

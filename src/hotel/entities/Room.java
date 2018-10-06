@@ -73,7 +73,7 @@ public class Room {
 
 
 	public void checkout(Booking booking) {
-		bookings.remove(booking);
+		//bookings.remove(booking);
 		state = State.READY;
 	}
 
