@@ -41,8 +41,6 @@ public class RecordServiceCTL {
 			recordServiceUI.displayMessage(mesg);
 		}
 		else {
-			String mesg = String.format("Booking for room id: %d is checked out", roomNumber);
-			recordServiceUI.displayMessage(mesg);
 			this.roomNumber = roomNumber;
 			state = State.SERVICE;
 			recordServiceUI.setState(RecordServiceUI.State.SERVICE);
