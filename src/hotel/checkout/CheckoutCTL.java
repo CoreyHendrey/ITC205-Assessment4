@@ -138,6 +138,4 @@ public class CheckoutCTL {
 		checkoutUI.displayMessage("Checking out completed");
 	}
 
-
-
 }
