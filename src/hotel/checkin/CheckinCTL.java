@@ -8,15 +8,15 @@ import hotel.entities.Room;
 import hotel.utils.IOUtils;
 
 public class CheckinCTL {
-	
+
 	private enum State {CHECKING, CONFIRMING, CANCELLED, COMPLETED };
-	
+
 	private Hotel hotel;
 	private CheckinUI checkInUI;
 	private State state;
 	private Booking booking = null;
 	private long confirmationNumber;
-	
+
 
 	public CheckinCTL(Hotel hotel) {
 		this.hotel = hotel;
@@ -24,13 +24,13 @@ public class CheckinCTL {
 		this.checkInUI = new CheckinUI(this);
 	}
 
-	
+
 	public void run() {
 		IOUtils.trace("BookingCTL: run");
 		checkInUI.run();
 	}
 
-	
+
 	public void confirmationNumberEntered(long confirmationNumber) {
 		if (state != State.CHECKING) {
 			String mesg = String.format("CheckInCTL: confirmationNumberEntered : bad state : %s", state);
@@ -38,11 +38,11 @@ public class CheckinCTL {
 		}
 		this.confirmationNumber = confirmationNumber;
 		booking = hotel.findBookingByConfirmationNumber(confirmationNumber);
-		
+
 		String message = null;
 		if (booking == null) {
 			message = String.format("No booking for confirmation number %d found", confirmationNumber);
-			checkInUI.displayMessage(message);	
+			checkInUI.displayMessage(message);
 			//cancel();
 		}
 		else if (!booking.isPending()){
@@ -52,7 +52,7 @@ public class CheckinCTL {
 			else {
 				message = String.format("Booking %d has already been checked out", confirmationNumber);
 			}
-			checkInUI.displayMessage(message);	
+			checkInUI.displayMessage(message);
 			//cancel();
 		}
 		else {
@@ -64,35 +64,35 @@ public class CheckinCTL {
 			else {
 				Guest guest = booking.getGuest();
 				CreditCard card = booking.getCreditCard();
-				
+
 				checkInUI.displayCheckinMessage(
 						room.getDescription(), room.getId(),
-						booking.getArrivalDate(), booking.getStayLength(), 
+						booking.getArrivalDate(), booking.getStayLength(),
 						guest.getName(),
 						card.getVendor(), card.getNumber(),
-						booking.getConfirmationNumber());	
-				
+						booking.getConfirmationNumber());
+
 				state = State.CONFIRMING;
 				checkInUI.setState(CheckinUI.State.CONFIRMING);
 			}
 		}
 	}
 
-	
+
 	public void checkInConfirmed(boolean confirmed) {
 		if (state != State.CONFIRMING) {
 			String mesg = String.format("CheckInCTL: checkInConfirmed : bad state : %s", state);
 			throw new RuntimeException(mesg);
-		}		
+		}
 		if (confirmed) {
 			hotel.checkin(confirmationNumber);
-			checkInUI.displayMessage("Check in confirmed");	
+			checkInUI.displayMessage("Check in confirmed");
 			state = State.COMPLETED;
 			checkInUI.setState(CheckinUI.State.COMPLETED);
 		}
 		else {
 			cancel();
-		}		
+		}
 	}
 
 
@@ -101,10 +101,15 @@ public class CheckinCTL {
 		state = State.CANCELLED;
 		checkInUI.setState(CheckinUI.State.CANCELLED);
 	}
-	
-	
+
+
 	public void completed() {
 		checkInUI.displayMessage("Checking in completed");
+	}
+
+	public void reset()
+	{
+		state = State.CHECKING;
 	}
 
 }
