@@ -85,7 +85,6 @@ public class CheckinCTLScenarioTests
 
 		checkinCtl.confirmationNumberEntered(101111102);
 
-		verify(checkinUI, never()).displayMessage("Booking 101111102 has already been checked in");
 		verify(checkinUI).displayMessage("Booking 101111102 has already been checked out");
 	}
 
