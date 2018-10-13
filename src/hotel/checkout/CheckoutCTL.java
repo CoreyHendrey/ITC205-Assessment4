@@ -32,10 +32,12 @@ public class CheckoutCTL {
 
 	public void run() {
 		IOUtils.trace("BookingCTL: run");
-		state = State.ROOM;
 		checkoutUI.run();
 	}
 
+	public void reset() {
+		state = State.ROOM;
+	}
 
 	public void roomIdEntered(int roomId) {
 		if (state != State.ROOM) {
@@ -135,13 +137,5 @@ public class CheckoutCTL {
 	public void completed() {
 		checkoutUI.displayMessage("Checking out completed");
 	}
-
-
-	public void reset()
-	{
-		state = State.ROOM;
-	}
-
-
 
 }

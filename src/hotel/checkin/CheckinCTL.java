@@ -30,6 +30,9 @@ public class CheckinCTL {
 		checkInUI.run();
 	}
 
+	public void reset() {
+		state = State.CHECKING;
+	}
 
 	public void confirmationNumberEntered(long confirmationNumber) {
 		if (state != State.CHECKING) {
@@ -105,11 +108,6 @@ public class CheckinCTL {
 
 	public void completed() {
 		checkInUI.displayMessage("Checking in completed");
-	}
-
-	public void reset()
-	{
-		state = State.CHECKING;
 	}
 
 }
