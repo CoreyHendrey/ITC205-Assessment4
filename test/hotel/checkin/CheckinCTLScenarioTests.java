@@ -1,5 +1,6 @@
 package hotel.checkin;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
@@ -11,7 +12,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import hotel.booking.BookingCTL;
@@ -24,10 +24,10 @@ import hotel.entities.RoomType;
 @ExtendWith(MockitoExtension.class)
 public class CheckinCTLScenarioTests
 {
-	@Spy Hotel hotel = new Hotel();
+	Hotel hotel = new Hotel();
 	@Mock CheckinUI checkinUI;
 	BookingCTL bookingCtl = new BookingCTL(hotel);
-	@Spy CheckoutCTL checkoutCtl = new CheckoutCTL(hotel);
+	CheckoutCTL checkoutCtl = new CheckoutCTL(hotel);
 	@InjectMocks CheckinCTL checkinCtl = new CheckinCTL(hotel);
 
 	@BeforeEach
@@ -58,6 +58,7 @@ public class CheckinCTLScenarioTests
 
 		verify(checkinUI, never()).displayMessage("Room is not ready, sorry");
 		verify(checkinUI).displayMessage("Booking 101111102 has already been checked in");
+		assertFalse(checkinCtl.isCompleted());
 	}
 
 
@@ -86,6 +87,7 @@ public class CheckinCTLScenarioTests
 		checkinCtl.confirmationNumberEntered(101111102);
 
 		verify(checkinUI).displayMessage("Booking 101111102 has already been checked out");
+		assertFalse(checkinCtl.isCompleted());
 	}
 
 }

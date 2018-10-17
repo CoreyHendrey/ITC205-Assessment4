@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import hotel.booking.BookingCTL;
@@ -22,7 +21,7 @@ import hotel.entities.RoomType;
 @ExtendWith(MockitoExtension.class)
 class RecordServiceCTLScenario
 {
-	@Spy Hotel hotel = new Hotel();
+	Hotel hotel = new Hotel();
 	@Mock RecordServiceUI recordServiceUI;
 	BookingCTL bookingCtl = new BookingCTL(hotel);
 	CheckinCTL checkinCtl = new CheckinCTL(hotel);
